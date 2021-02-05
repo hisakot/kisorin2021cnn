@@ -48,12 +48,11 @@ class AlexNet_Model(nn.Module):
     def __init__(self, pretrained=False, out_classes=1000):
         super(AlexNet_Model, self).__init__()
         # pre-trained on ImageNet, display progress bar
-        self.alexnet = models.alexnet(pretrained=pretrained, progress=True)
+        self.alexnet = models.alexnet(pretrained=pretrained, progress=False)
         self.fc = nn.Linear(1000, out_classes)
 
-    def foward(self, x):
+    def forward(self, x):
         x = self.alexnet(x)
-        print(x.shape)
         x = self.fc(x)
         
         return x

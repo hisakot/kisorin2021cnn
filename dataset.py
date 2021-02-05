@@ -28,11 +28,11 @@ class Datas():
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = image.astype(np.float32) / 255.0
         image = np.transpose(image, (2, 0, 1)) # (c, h, w)
-        image = torch.tensor(image, dtype=torch.int64) # tensor
+        image = torch.tensor(image, dtype=torch.float32) # tensor
 
         # load label
         label = self.dataset[idx]["label"] # (x, y)
-        label = torch.tensor(label, dtype=torch.float32)
+        label = torch.tensor(label, dtype=torch.long)
 
         return image, label
 
