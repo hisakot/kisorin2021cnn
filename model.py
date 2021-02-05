@@ -12,14 +12,14 @@ class AlexNet(nn.Module):
         self.conv2 = nn.Conv2d(64, 192, kernel_size=5, stride=1, padding=2)
         self.conv3 = nn.Conv2d(192, 384, kernel_size=3, stride=1, padding=1)
         self.conv4 = nn.Conv2d(384, 256, kernel_size=3, stride=1, padding=1)
-        self.conv4 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
+        self.conv5 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
 
         self.dropout = nn.Dropout(p=0.5, inplace=False)
         self.linear1 = nn.Linear(in_features=256 * 6 * 6, out_features=4096)
         self.linear2 = nn.Linear(4096, 4096)
-        self.linear2 = nn.Linear(4096, out_classes)
+        self.linear3 = nn.Linear(4096, out_classes)
 
-    def foward(self, x):
+    def forward(self, x):
         x = self.conv1(x)
         x = self.relu(x)
         x = self.maxpool(x)
