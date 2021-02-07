@@ -71,7 +71,7 @@ if __name__ == '__main__':
     train, test = torch.utils.data.random_split(datas, [train_size, test_size])
 
     # set up model
-    model = model.AlexNet(pretrained=False, out_classes=5) # x, y
+    model = model.AlexNet(pretrained=False, out_classes=1) # x, y
 #     model = model.AlexNet_Model(pretrained=False, out_classes=5) # x, y
 
     # set up GPU

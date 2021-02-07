@@ -23,7 +23,7 @@ def forward(model, device, img_path):
     image = image.astype(np.float32) / 255.0
     image = np.transpose(image, (2, 0, 1)) # (c, h, w)
     # make single batch tensor
-    image = torch.tensor(image[np.newaxis, :, :], dtype=torch.int64)
+    image = torch.tensor(image[np.newaxis, :, :], dtype=torch.float32)
     image = image.to(device)
     with torch.no_grad():
         output = model(image)
@@ -51,12 +51,14 @@ if __name__ == '__main__':
     # main
     img_dirs = os.listdir(ROOT_DIR)
     img_dirs_list = [ROOT_DIR + d + "/*.jpg" for d in img_dirs]
+<<<<<<< HEAD
     img_dirs_list.sort()
+=======
+>>>>>>> 875af844b9e9fcfe563cc62775e47082c7b69886
     img_paths = list()
     for i, img_dir in enumerate(img_dirs_list):
-        img_paths.append(glob.glob(img_dir))
-        img_paths.sort()
-    print(img_paths)
+        for img_path in glob.glob(img_dir):
+            img_paths.append(img_path)
 
     if not os.path.exists(INF_CSV):
         print("========== forward and save inferenced result ==========")
@@ -64,8 +66,8 @@ if __name__ == '__main__':
             # inference
             output = forward(model, device, img_path)
             output = output.cpu().numpy()
-            result = np.array([img_path, output])
+            result = np.array([img_path, str(output)])
 
             # save inferenced gaze as txt
             with open (INF_CSV, "a") as f:
-                np.savetxt(f, result, delimiter=",")
+                np.savetxt(f, result, delimiter=",", fmt="%s")
