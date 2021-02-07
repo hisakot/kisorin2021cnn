@@ -12,8 +12,10 @@ import model
 W = 224
 H = 224
 
+ROOT_DIR = "./flowers/"
 MODEL_SAVE_PATH = "./models/"
 IMG_PATH = "./flowers/"
+INF_CSV = "./inference.csv"
 
 def forward(model, device, img_path):
     image = cv2.imread(img_path)
@@ -48,10 +50,15 @@ if __name__ == '__main__':
     model.eval()
 
     # main
-    img_paths = glob.glob(IMG_PATH)
-    img_paths.sort()
+    img_dirs = os.listdir(ROOT_DIR)
+    img_dirs_list = [ROOT_DIR + d + "/*.jpg" for d in img_dirs]
+    img_dirs_list.sort()
+    for i, img_dir in enumerate(img_dirs_list):
+        img_paths.append(glob.glob(img_dir))
+        img_paths.sort()
+    print(img_paths)
 
-    if not os.path.exists(INF_GAZE_CSV):
+    if not os.path.exists(INF_CSV):
         print("========== forward and save inferenced result ==========")
         for i, img_path in enumerate(img_paths):
             # inference
