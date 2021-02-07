@@ -6,7 +6,6 @@ import os
 import torch
 
 import common
-import blend
 import model
 
 W = 224
@@ -53,6 +52,7 @@ if __name__ == '__main__':
     img_dirs = os.listdir(ROOT_DIR)
     img_dirs_list = [ROOT_DIR + d + "/*.jpg" for d in img_dirs]
     img_dirs_list.sort()
+    img_paths = list()
     for i, img_dir in enumerate(img_dirs_list):
         img_paths.append(glob.glob(img_dir))
         img_paths.sort()
