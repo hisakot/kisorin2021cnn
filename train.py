@@ -71,7 +71,7 @@ if __name__ == '__main__':
     train, test = torch.utils.data.random_split(datas, [train_size, test_size])
 
     # set up model
-    model = model.AlexNet(pretrained=False, out_classes=1) # x, y
+    model = model.AlexNet(pretrained=False, out_classes=5)
 #     model = model.AlexNet_Model(pretrained=False, out_classes=5) # x, y
 
     # set up GPU
@@ -103,19 +103,19 @@ if __name__ == '__main__':
             print("%d : test_loss : %.3f" % (epoch + 1, test_loss))
             
             # early stoping
-            if test_loss < early_stopping[0]:
-                early_stopping[0] = test_loss
-                early_stopping[-1] = 0
-                torch.save({
-                    "epoch" : epoch + 1,
-                    "model_state_dict" : model.state_dict(),
-                    "optimizer_state_dict" : optimizer.state_dict(),
-                    "loss" : loss_list
-                    }, "./models/" + str(epoch + 1))
-            else:
-                early_stopping[-1] += 1
-                if early_stopping[-1] == early_stopping[1]:
-                    break
+#             if test_loss < early_stopping[0]:
+#                 early_stopping[0] = test_loss
+#                 early_stopping[-1] = 0
+#                 torch.save({
+#                     "epoch" : epoch + 1,
+#                     "model_state_dict" : model.state_dict(),
+#                     "optimizer_state_dict" : optimizer.state_dict(),
+#                     "loss" : loss_list
+#                     }, "./models/" + str(epoch + 1))
+#             else:
+#                 early_stopping[-1] += 1
+#                 if early_stopping[-1] == early_stopping[1]:
+#                     break
 
             # tensorboard
             writer.add_scalar("Train Loss", train_loss, epoch)

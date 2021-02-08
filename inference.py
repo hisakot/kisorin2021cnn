@@ -62,7 +62,7 @@ if __name__ == '__main__':
             # inference
             output = forward(model, device, img_path)
             output = output.cpu().numpy()
-            value = max(output, 1)
+            value = torch.max(output, 1)
             result = np.array([img_path, str(value)])
 
             # save inferenced gaze as txt
