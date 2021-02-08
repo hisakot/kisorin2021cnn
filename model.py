@@ -18,6 +18,7 @@ class AlexNet(nn.Module):
         self.linear1 = nn.Linear(in_features=256 * 6 * 6, out_features=4096)
         self.linear2 = nn.Linear(4096, 4096)
         self.linear3 = nn.Linear(4096, out_classes)
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -41,6 +42,7 @@ class AlexNet(nn.Module):
         x = self.linear2(x)
         x = self.relu(x)
         x = self.linear3(x)
+        x = self.softmax(x)
 
         return x
 

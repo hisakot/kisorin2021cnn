@@ -51,10 +51,6 @@ if __name__ == '__main__':
     # main
     img_dirs = os.listdir(ROOT_DIR)
     img_dirs_list = [ROOT_DIR + d + "/*.jpg" for d in img_dirs]
-<<<<<<< HEAD
-    img_dirs_list.sort()
-=======
->>>>>>> 875af844b9e9fcfe563cc62775e47082c7b69886
     img_paths = list()
     for i, img_dir in enumerate(img_dirs_list):
         for img_path in glob.glob(img_dir):
@@ -66,7 +62,8 @@ if __name__ == '__main__':
             # inference
             output = forward(model, device, img_path)
             output = output.cpu().numpy()
-            result = np.array([img_path, str(output)])
+            value = max(output, 1)
+            result = np.array([img_path, str(value)])
 
             # save inferenced gaze as txt
             with open (INF_CSV, "a") as f:
