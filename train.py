@@ -101,6 +101,12 @@ if __name__ == '__main__':
             # show loss and accuracy
             print("%d : train_loss : %.3f" % (epoch + 1, train_loss))
             print("%d : test_loss : %.3f" % (epoch + 1, test_loss))
+            torch.save({
+                "epoch" : epoch + 1,
+                "model_state_dict" : model.state_dict(),
+                "optimizer_state_dict" : optimizer.state_dict(),
+                "loss" : loss_list
+                }, "./models/" + str(epoch + 1))
             
             # early stoping
 #             if test_loss < early_stopping[0]:
