@@ -32,7 +32,8 @@ def forward(model, device, img_path):
 
 if __name__ == '__main__':
     # setup model and GPU
-    model = model.AlexNet(pretrained=False, out_classes=5)
+#     model = model.AlexNet_Model(pretrained=False, out_classes=5)
+    model = model.Net(pretrained=False, out_classes=5)
     model, device = common.setup_device(model)
 
     save_model = glob.glob(MODEL_SAVE_PATH + "*")[0]
@@ -51,20 +52,27 @@ if __name__ == '__main__':
     # main
     img_dirs = os.listdir(ROOT_DIR)
     img_dirs_list = [ROOT_DIR + d + "/*.jpg" for d in img_dirs]
-    img_paths = list()
+    img_datas = list()
     for i, img_dir in enumerate(img_dirs_list):
         for img_path in glob.glob(img_dir):
-            img_paths.append(img_path)
+            img_datas.append({"img_path" : img_path,
+                             "label" : i,})
 
     if not os.path.exists(INF_CSV):
         print("========== forward and save inferenced result ==========")
-        for i, img_path in enumerate(img_paths):
-            # inference
-            output = forward(model, device, img_path)
-            output = output.cpu().numpy()
-            value = torch.max(output, 1)
-            result = np.array([img_path, str(value)])
+        total = 0
+        correct = 0
+        for i, img_data in enumerate(img_datas):
+            output = forward(model, device, img_data["img_path"])
+            # output = output.cpu().numpy()
+            value, idx = torch.max(output, 1)
+            if int(img_data["label"]) == idx:
+                correct += 1
+            result = np.array([[img_data["img_path"], str(value.item()), str(idx.item())]])
+            total += 1
 
             # save inferenced gaze as txt
             with open (INF_CSV, "a") as f:
                 np.savetxt(f, result, delimiter=",", fmt="%s")
+        
+        print("accuracy = ", correct / total)

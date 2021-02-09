@@ -24,6 +24,7 @@ def trainer(train, model, optimizer, lossfunc):
     try:
         with tqdm(trainloader, ncols=100) as pbar:
             train_loss = 0.0
+            data_num = 0
             for images, labels in pbar:
                 images, labels = Variable(images), Variable(labels)
                 images, labels = images.to(device), labels.to(device)
@@ -34,8 +35,9 @@ def trainer(train, model, optimizer, lossfunc):
                 loss.backward()
                 optimizer.step()
                 train_loss += loss.item()
+                data_num += 1
 
-        return train_loss
+        return train_loss / data_num
 
     except ValueError:
         pass
@@ -47,6 +49,7 @@ def tester(test, model):
 
     try:
         test_loss = 0.0
+        data_num = 0
         with tqdm(testloader, ncols=100) as pbar:
             for images, labels in pbar:
                 images, labels = images.to(device), labels.to(device)
@@ -54,8 +57,9 @@ def tester(test, model):
                 outputs = model(images)
                 loss = lossfunc(outputs, labels)
                 test_loss += loss.item()
+                data_num += 1
 
-        return test_loss
+        return test_loss / data_num
 
     except ValueError:
         pass
@@ -71,14 +75,15 @@ if __name__ == '__main__':
     train, test = torch.utils.data.random_split(datas, [train_size, test_size])
 
     # set up model
-    model = model.AlexNet(pretrained=False, out_classes=5)
-#     model = model.AlexNet_Model(pretrained=False, out_classes=5) # x, y
+#    model = model.AlexNet(pretrained=False, out_classes=5)
+#    model = model.AlexNet_Model(pretrained=False, out_classes=5)
+    model = model.Net(pretrained=False, out_classes=5)
 
     # set up GPU
     model, device = common.setup_device(model)
 
     # optimizer and loss
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.00005)
     lossfunc = nn.CrossEntropyLoss()
 #     lossfunc = nn.MSELoss()
 
